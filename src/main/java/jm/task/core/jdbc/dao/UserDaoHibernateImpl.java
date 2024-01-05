@@ -14,6 +14,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class UserDaoHibernateImpl implements UserDao {
@@ -92,17 +93,17 @@ public class UserDaoHibernateImpl implements UserDao {
 
     @Override
     public List<User> getAllUsers() {
-        List<User> list = new ArrayList<>();
         Transaction transaction = null;
         try (Session session = sessionFactory.openSession()) {
             transaction = session.beginTransaction();
-            CriteriaBuilder cb = session.getCriteriaBuilder();
-            CriteriaQuery<User> cq = cb.createQuery(User.class);
-            Root<User> rootEntry = cq.from(User.class);
-            CriteriaQuery<User> all = cq.select(rootEntry);
-            TypedQuery<User> allQuery = session.createQuery(all);
-            session.getTransaction().commit();
-            return allQuery.getResultList();
+//            CriteriaBuilder cb = session.getCriteriaBuilder();
+//            CriteriaQuery<User> cq = cb.createQuery(User.class);
+//            Root<User> rootEntry = cq.from(User.class);
+//            CriteriaQuery<User> all = cq.select(rootEntry);
+//            TypedQuery<User> allQuery = session.createQuery(all);
+//            session.getTransaction().commit();
+//            return allQuery.getResultList();
+            return session.createQuery("FROM User", User.class).getResultList();
         } catch (HibernateException e) {
             if (transaction != null) {
                 transaction.rollback();
